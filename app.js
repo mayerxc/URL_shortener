@@ -6,10 +6,18 @@ var app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+//allows node to use static content
+app.use(express.static(__dirname + "/public"));
+
 //Creates the database entry
-app.get('/new/:urlshortener(*)', function(){
-    
-})
+app.get('/new/:urlToShorten(*)', function(req, res, next){
+    //es5 syntax
+    //var urlToShorten = req.params.urlToShorten
+
+    //es6 syntax
+    var { urlToShorten } = req.params;
+    console.log(urlToShorten);
+});
 
 /*app.get('/chris', function(req,res,next){
     res.end('chris is the best ever');

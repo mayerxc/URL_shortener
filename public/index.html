@@ -1,0 +1,27 @@
+<!doctype html>
+<html ng-app="shortURLApp">
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+        <script src="js/app.js"></script>
+    </head>
+    <body>
+        <header>
+            <h3>
+                URL Shortener Microservice
+            </h3>
+            <h4>
+                <a href="https://freecodecamp.com" target="blank">freeCodeCamp: APIs and Microservices</a>
+            </h4>
+            <h5>
+                Technologies: Node, Express, MongoDB, Mongoose, JavaScript, HTML, CSS and Bootsrap
+            </h5>
+
+        </header>
+        <section ng-controller="shortAppCtrl">
+            {{urlToShorten}}
+            <input placeholder="Enter URL" ng-model="urlToShorten" >
+            <a class="btn btn-primary">Get Short URL</a>
+        </section>
+    </body>
