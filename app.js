@@ -16,7 +16,7 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
 
     //es6 syntax
     var { urlToShorten } = req.params;
-    console.log(urlToShorten);
+    return res.json({urlToShorten});
 });
 
 /*app.get('/chris', function(req,res,next){
