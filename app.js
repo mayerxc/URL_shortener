@@ -1,10 +1,16 @@
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var shortUrl = require('./models/shortUrl');
 var express = require('express');
+
 //create an instance of our app and cors and body parser
 var app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+//connect to our database
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/shortUrls');
 
 //allows node to use static content
 app.use(express.static(__dirname + "/public"));
