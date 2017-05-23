@@ -22,7 +22,14 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
 
     //es6 syntax
     var { urlToShorten } = req.params;
-    return res.json({urlToShorten});
+    //regex from Stackoverflow to see test if valid URL
+    var regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    if (regex.test(urlToShorten) === true){
+        return res.json({urlToShorten});
+    } else {
+        return res.json({urlToShorten: "Failed"});
+    }
+    
 });
 
 /*app.get('/chris', function(req,res,next){
