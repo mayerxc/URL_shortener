@@ -39,9 +39,15 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
             }
         });
 
-        return res.json({data});
+        return res.json(data);
     } else {
-        return res.json({urlToShorten: "Failed"});
+         var data = new shortUrl(
+            {
+                originalUrl: urlToShorten,
+                shorterUrl: "invalid_URL"
+            }
+         );
+        return res.json(data);
     }
     
 });
