@@ -24,8 +24,22 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
     var { urlToShorten } = req.params;
     //regex from Stackoverflow to see test if valid URL
     var regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    
     if (regex.test(urlToShorten) === true){
-        return res.json({urlToShorten});
+        var short = Math.floor(Math.random()*100000).toString();
+        var data = new shortUrl(
+            {
+                originalUrl: urlToShorten,
+                shorterUrl: short
+            }
+        );
+        data.save(err=>{
+            if(err) {
+                return res.send("Error saving to database");
+            }
+        });
+
+        return res.json({data});
     } else {
         return res.json({urlToShorten: "Failed"});
     }
