@@ -22,6 +22,7 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
 
     //es6 syntax
     var { urlToShorten } = req.params;
+
     //regex from Stackoverflow to see test if valid URL
     var regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
     
@@ -51,6 +52,30 @@ app.get('/new/:urlToShorten(*)', function(req, res, next){
     }
     
 });
+
+/*
+//Query database and forward to our original URL
+app.get('/:urlToForward', (req, res, next)=>{
+    //stores the value of param
+    var shorterUrl = req.params.urlToForward;
+
+    shortUrl.findOne({'shorterUrl': shorterUrl}, (err, data)=>{
+        if (err){
+            return res.send("Error reading database");
+        }
+        var re = new RegExp("^(http|https)://", "i");
+        var strToCheck = data.originalUrl;
+        if (re.test(strToCheck)){
+            res.redirect(301, data.originalUrl)
+        } else {
+            res.redirect(301, 'http://' + data.originalUrl);
+        }
+    });
+});
+*/
+
+
+
 
 /*app.get('/chris', function(req,res,next){
     res.end('chris is the best ever');
