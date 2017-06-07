@@ -16,74 +16,70 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/shortUrls');
 app.use(express.static(__dirname + "/public"));
 
 //Creates the database entry
-app.get('/new/:urlToShorten(*)', function(req, res, next){
+app.get('/new/:urlToShorten(*)', function (req, res, next) {
     //es5 syntax
     //var urlToShorten = req.params.urlToShorten
 
     //es6 syntax
-    var { urlToShorten } = req.params;
+    var {
+        urlToShorten
+    } = req.params;
 
     //regex from Stackoverflow to see test if valid URL
     var regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-    
-    if (regex.test(urlToShorten) === true){
-        var short = Math.floor(Math.random()*100000).toString();
-        var data = new shortUrl(
-            {
-                originalUrl: urlToShorten,
-                shorterUrl: short
-            }
-        );
-        data.save(err=>{
-            if(err) {
+
+    if (regex.test(urlToShorten) === true) {
+        var short = Math.floor(Math.random() * 100000).toString();
+        var data = new shortUrl({
+            originalUrl: urlToShorten,
+            shorterUrl: short
+        });
+        //save to mongo database
+        data.save(err => {
+            if (err) {
                 return res.send("Error saving to database");
             }
         });
 
         return res.json(data);
     } else {
-         var data = new shortUrl(
-            {
-                originalUrl: urlToShorten,
-                shorterUrl: "invalid_URL"
-            }
-         );
+        var data = new shortUrl({
+            originalUrl: urlToShorten,
+            shorterUrl: "invalid_URL"
+        });
         return res.json(data);
     }
-    
+
 });
 
-/*
+
 //Query database and forward to our original URL
-app.get('/:urlToForward', (req, res, next)=>{
+app.get('/:urlToForward', (req, res, next) => {
     //stores the value of param
     var shorterUrl = req.params.urlToForward;
 
-    shortUrl.findOne({'shorterUrl': shorterUrl}, (err, data)=>{
-        if (err){
-            return res.send("Error reading database");
-        }
-        var re = new RegExp("^(http|https)://", "i");
-        var strToCheck = data.originalUrl;
-        if (re.test(strToCheck)){
-            res.redirect(301, data.originalUrl)
+    shortUrl.findOne( {'shorterUrl': shorterUrl} , function (err, data) {
+        if (err) {
+            res.send("Error reading database");
         } else {
-            res.redirect(301, 'http://' + data.originalUrl);
+            if (data) {
+                var re = new RegExp("^(http|https)://", "i");
+                var strToCheck = data.originalUrl;
+                if (re.test(strToCheck)) {
+                    res.redirect(301, data.originalUrl)
+                } else {
+                    res.redirect(301, 'http://' + data.originalUrl);
+                }
+            } else {
+                res.json( { Error: 'Nothing matching ' + shorterUrl + ' in database' } );
+            }
+            
         }
     });
 });
-*/
-
-
-
-
-/*app.get('/chris', function(req,res,next){
-    res.end('chris is the best ever');
-})*/
-
 
 //listen to see if everything is working and process.env.PORT is for heroku
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || 3000, function () {
     console.log("listening!!!");
 })
 
