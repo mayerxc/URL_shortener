@@ -21,9 +21,7 @@ app.get('/new/:urlToShorten(*)', function (req, res, next) {
     //var urlToShorten = req.params.urlToShorten
 
     //es6 syntax
-    var {
-        urlToShorten
-    } = req.params;
+    var {urlToShorten} = req.params;
 
     //regex from Stackoverflow to see test if valid URL
     var regex = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
@@ -67,8 +65,10 @@ app.get('/:urlToForward', (req, res, next) => {
                 var strToCheck = data.originalUrl;
                 if (re.test(strToCheck)) {
                     res.redirect(301, data.originalUrl)
+                    console.log(data);
                 } else {
                     res.redirect(301, 'http://' + data.originalUrl);
+                    console.log(data);
                 }
             } else {
                 res.json( { Error: 'Nothing matching ' + shorterUrl + ' in database' } );
@@ -82,7 +82,5 @@ app.get('/:urlToForward', (req, res, next) => {
 app.listen(process.env.PORT || 3000, function () {
     console.log("listening!!!");
 })
-
-
 
 module.exports = app
